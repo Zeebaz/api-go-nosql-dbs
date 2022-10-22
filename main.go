@@ -23,7 +23,7 @@ import (
 // }
 
 func mainPoint(c *fiber.Ctx) error {
-	return c.SendString("Hola mundo")
+	return c.SendString("Usactar 2022 - Go API")
 }
 
 func main() {
@@ -34,7 +34,7 @@ func main() {
 	app.Use(requestid.New())
 
 	app.Get("/", mainPoint)
-	app.Get("/matches", mainPoint)
+	app.Get("/matches", handlers.HandleGetMatches)
 	app.Post("/prediction", handlers.HandleAddNewPrediction)
 	app.Get("/predictions", handlers.HandleGetPredictions)
 

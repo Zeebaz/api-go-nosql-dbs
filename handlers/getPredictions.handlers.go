@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/Zeebaz/api-go-nosql-dbs/models"
@@ -16,9 +15,7 @@ func HandleGetPredictions(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusConflict)
 	}
 
-	predictionsReply := make(models.Predictions, len(allPredictions)/2-1)
-
-	fmt.Println(">> LISTA DE REDIS")
+	predictionsReply := make(models.Predictions, 0)
 
 	for k, v := range allPredictions {
 		times, _ := strconv.Atoi(v)
@@ -29,8 +26,6 @@ func HandleGetPredictions(c *fiber.Ctx) error {
 		}
 
 		predictionsReply = append(predictionsReply, prediction)
-
-		fmt.Printf("%s -> %s\n", k, v)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(predictionsReply)

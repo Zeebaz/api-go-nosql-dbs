@@ -2,7 +2,6 @@ package rediscontroller
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
@@ -17,35 +16,40 @@ func RedisConnection() *redis.Client {
 	}
 
 	redisHost := os.Getenv("REDIS_HOST")
+	redisPass := os.Getenv("REDIS_PASSWORD")
+	// redisDB := os.Getenv("REDIS_DB")
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     redisHost,
-		Password: "",
+		Password: redisPass,
 		DB:       0,
 	})
 	return rdb
 }
 
-func SetNewMatch(key string, field string) map[string]string {
+func SetSADD(key string, member string) (int64, error) {
 	rdb := RedisConnection()
 	ctx := context.Background()
 
-	val, err := rdb.HGetAll(ctx, "matches").Result()
-	switch {
-	case err == redis.Nil:
-		fmt.Println("key does not exist")
-	case err != nil:
-		fmt.Println("Get failed", err)
-	}
-
-	return val
+	return rdb.SAdd(ctx, key, member).Result()
 }
 
+func GetSMEMBERS(key string) ([]string, error) {
+	rdb := RedisConnection()
+	ctx := context.Background()
+
+	return rdb.SMembers(ctx, key).Result()
+}
+
+func SetHINCRBY(key string, field string, increment int64) (int64, error) {
+	rdb := RedisConnection()
+	ctx := context.Background()
+
+	return rdb.HIncrBy(ctx, key, field, increment).Result()
+}
 func GetHGETALL(key string) (map[string]string, error) {
 	rdb := RedisConnection()
 	ctx := context.Background()
 
-	val, err := rdb.HGetAll(ctx, key).Result()
-
-	return val, err
+	return rdb.HGetAll(ctx, key).Result()
 }
