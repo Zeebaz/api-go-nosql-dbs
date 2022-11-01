@@ -36,6 +36,7 @@ func HandleAddNewPrediction(c *fiber.Ctx) error {
 
 	errm := mongocontroller.AddOneDocument(newPredictionMatch, "PREDICTIONS", "matches")
 	if errm != nil {
+		fmt.Println(errm)
 		return fiber.NewError(fiber.StatusConflict, "An error occurred when inserting the prediction on mongo db")
 	}
 

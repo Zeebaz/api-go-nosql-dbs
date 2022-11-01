@@ -2,18 +2,17 @@ package rediscontroller
 
 import (
 	"context"
-	"log"
 	"os"
 
 	"github.com/go-redis/redis/v9"
-	"github.com/joho/godotenv"
 )
 
 func RedisConnection() *redis.Client {
-	err := godotenv.Load()
+	/* err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+		fmt.Println("Error loading .env file")
+		fmt.Println(err)
+	} */
 
 	redisHost := os.Getenv("REDIS_HOST")
 	redisPass := os.Getenv("REDIS_PASSWORD")

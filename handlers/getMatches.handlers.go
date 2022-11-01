@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -12,6 +13,7 @@ import (
 func HandleGetMatches(c *fiber.Ctx) error {
 	allMatches, err := rediscontroller.GetSMEMBERS("matches")
 	if err != nil {
+		fmt.Println(err)
 		return fiber.NewError(fiber.StatusConflict, "Error getting matches")
 	}
 

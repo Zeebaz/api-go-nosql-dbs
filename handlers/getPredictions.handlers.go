@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/Zeebaz/api-go-nosql-dbs/models"
@@ -12,7 +13,8 @@ func HandleGetPredictions(c *fiber.Ctx) error {
 
 	allPredictions, err := rediscontroller.GetHGETALL("predictions")
 	if err != nil {
-		return c.SendStatus(fiber.StatusConflict)
+		fmt.Println(err)
+		return fiber.NewError(fiber.StatusConflict, "Error getting predictions")
 	}
 
 	predictionsReply := make(models.Predictions, 0)
