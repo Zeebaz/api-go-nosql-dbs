@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Zeebaz/api-go-nosql-dbs/handlers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 )
@@ -17,12 +18,13 @@ func main() {
 	// middlewares
 	app.Use(logger.New())
 	app.Use(requestid.New())
+	app.Use(cors.New())
 
 	app.Get("/", mainPoint)
 	app.Get("/matches", handlers.HandleGetMatches)
 	app.Post("/prediction", handlers.HandleAddNewPrediction)
 	app.Get("/predictions", handlers.HandleGetPredictions)
-	app.Get("/test", handlers.HandleTestEndpoint)
+	app.Get("/last", handlers.HandleMongoRecords)
 
 	app.Listen(":3000")
 }

@@ -43,7 +43,9 @@ func GetManyDocuments(db string, collection string) ([]primitive.M, error) {
 	coll := client.Database(db).Collection(collection)
 
 	filter := bson.D{}
-	cursor, err := coll.Find(context.TODO(), filter)
+	opts := options.Find().SetSort(bson.D{{"$natural", -1}}).SetLimit(10)
+
+	cursor, err := coll.Find(context.TODO(), filter, opts)
 	if err != nil {
 		panic(err)
 	}
