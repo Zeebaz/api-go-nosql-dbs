@@ -13,8 +13,10 @@ import (
 )
 
 func mongoConnection() *mongo.Client {
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found")
+	if os.Getenv("GO_ENV") != "production" {
+		if err := godotenv.Load(); err != nil {
+			log.Println("No .env file found")
+		}
 	}
 
 	uri := os.Getenv("MONGODB_URI")
@@ -43,7 +45,8 @@ func GetManyDocuments(db string, collection string) ([]primitive.M, error) {
 	coll := client.Database(db).Collection(collection)
 
 	filter := bson.D{}
-	opts := options.Find().SetSort(bson.D{{"$natural", -1}}).SetLimit(10)
+	// opts := options.Find().SetSort(bson.D{{"$natural", -1}}).SetLimit(10)
+	opts := options.Find().SetSort(bson.D{{Key: "$natural", Value: -1}}).SetLimit(10)
 
 	cursor, err := coll.Find(context.TODO(), filter, opts)
 	if err != nil {

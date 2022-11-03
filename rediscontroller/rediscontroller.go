@@ -10,10 +10,12 @@ import (
 )
 
 func RedisConnection() *redis.Client {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		fmt.Println(err)
+	if os.Getenv("GO_ENV") != "production" {
+		err := godotenv.Load()
+		if err != nil {
+			fmt.Println("Error loading .env file")
+			fmt.Println(err)
+		}
 	}
 
 	redisHost := os.Getenv("REDIS_HOST")
