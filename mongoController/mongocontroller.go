@@ -58,6 +58,28 @@ func GetManyDocuments(db string, collection string) ([]primitive.M, error) {
 	return results, nil
 }
 
+func GetCountDocuments(db string, collection string) (int64, error) {
+	client := mongoConnection()
+
+	defer func() {
+		if err := client.Disconnect(context.TODO()); err != nil {
+			panic(err)
+		}
+	}()
+
+	coll := client.Database(db).Collection(collection)
+
+	filter := bson.D{}
+
+	count, err := coll.CountDocuments(context.TODO(), filter)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return count, nil
+}
+
 func AddOneDocument(document interface{}, db string, collection string) error {
 	client := mongoConnection()
 	coll := client.Database(db).Collection(collection)

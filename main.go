@@ -25,6 +25,7 @@ func main() {
 	app.Post("/prediction", handlers.HandleAddNewPrediction)
 	app.Get("/predictions", handlers.HandleGetPredictions)
 	app.Get("/last", handlers.HandleMongoRecords)
+	app.Get("/count", handlers.HandleCountPredictions)
 
 	app.Listen(":3000")
 }

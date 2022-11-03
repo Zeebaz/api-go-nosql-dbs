@@ -12,7 +12,7 @@ func HandleMongoRecords(c *fiber.Ctx) error {
 	response, err := mongocontroller.GetManyDocuments("PREDICTIONS", "matches")
 	if err != nil {
 		fmt.Println(err)
-		return fiber.NewError(fiber.StatusConflict, "Error getting matches")
+		return fiber.NewError(fiber.StatusConflict, "Error getting mongo records")
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
